@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="390" viewBox="0 0 1200 390" role="img" aria-labelledby="title desc">
+  <title id="title">The gather, message, aggregate, and update stages of a message-passing layer</title>
+  <desc id="desc">Four connected computational stages map node states to updated node states.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#57606a"/></marker>
+    <style>.box{fill:#fff;stroke:#d0d7de;stroke-width:1.5}.boxBlue{fill:#ddf4ff;stroke:#54aeff;stroke-width:1.5}.boxGold{fill:#fff8c5;stroke:#d4a72c;stroke-width:1.5}.head{font:600 20px Georgia,serif;fill:#24292f;text-anchor:middle}.body{font:15px Arial,sans-serif;fill:#57606a;text-anchor:middle}.mono{font:15px ui-monospace,SFMono-Regular,Consolas,monospace;fill:#24292f;text-anchor:middle}.arrow{stroke:#57606a;stroke-width:2;fill:none;marker-end:url(#arrow)}.stage{font:600 13px Arial,sans-serif;fill:#0969da;text-anchor:middle}</style>
+  </defs>
+  <rect width="1200" height="390" rx="12" fill="#f6f8fa"/><text x="600" y="38" class="head">One message-passing layer</text><text x="600" y="64" class="body">node space → edge space → node space</text>
+  <rect class="box" x="35" y="105" width="235" height="185" rx="8"/><text class="stage" x="152" y="130">1 · GATHER</text><text class="head" x="152" y="166">Edge endpoints</text><text class="mono" x="152" y="205">h_src = H[src]</text><text class="mono" x="152" y="234">h_dst = H[dst]</text><text class="body" x="152" y="267">N × F  →  |E| × F</text>
+  <rect class="boxBlue" x="330" y="105" width="235" height="185" rx="8"/><text class="stage" x="447" y="130">2 · MESSAGE</text><text class="head" x="447" y="166">Edge computation</text><text class="mono" x="447" y="209">mⱼ→ᵢ = M(hᵢ,hⱼ,eⱼᵢ)</text><text class="body" x="447" y="245">one vector for each edge</text><text class="body" x="447" y="270">shared parameters</text>
+  <rect class="boxGold" x="625" y="105" width="235" height="185" rx="8"/><text class="stage" x="742" y="130">3 · AGGREGATE</text><text class="head" x="742" y="166">Destination reduction</text><text class="mono" x="742" y="209">m̄ᵢ = Σⱼ∈N(i) mⱼ→ᵢ</text><text class="body" x="742" y="245">sum · mean · maximum</text><text class="body" x="742" y="270">permutation invariant</text>
+  <rect class="box" x="920" y="105" width="235" height="185" rx="8"/><text class="stage" x="1037" y="130">4 · UPDATE</text><text class="head" x="1037" y="166">New node states</text><text class="mono" x="1037" y="209">hᵢ′ = U(hᵢ,m̄ᵢ)</text><text class="body" x="1037" y="245">linear map · MLP · gate</text><text class="body" x="1037" y="270">N × F′</text>
+  <path class="arrow" d="M270 197H325"/><path class="arrow" d="M565 197H620"/><path class="arrow" d="M860 197H915"/><text class="body" x="600" y="340">Stacking L layers gives an L-hop receptive field.</text>
+</svg>
