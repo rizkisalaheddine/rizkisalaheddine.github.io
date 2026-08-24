@@ -41,8 +41,8 @@ The combinatorial structure is usually accompanied by numerical attributes:
 For a molecular graph, nodes may denote atoms, edges may denote chemical bonds or spatial neighborhoods, and $x_i$ may encode atomic species and local descriptors. In a citation graph, nodes are documents, edges are citations, and node features may be derived from text.
 
 <figure class="text-center">
-  <img src="{{ '/assets/img/blog/gnn-from-scratch/graph-data.svg' | relative_url }}" alt="A small attributed graph shown beside its adjacency matrix and COO edge representation" loading="lazy">
-  <figcaption><strong>Figure 1.</strong> Three equivalent views of graph structure: an attributed graph, a dense adjacency matrix, and a sparse coordinate list. The sparse representation stores only existing directed edges.</figcaption>
+  <img class="img-fluid" src="{{ '/assets/img/blog/gnn-from-scratch/karate-club-graph.png' | relative_url }}" alt="Zachary's karate club graph, with nodes colored by community" loading="lazy">
+  <figcaption><strong>Figure 1.</strong> Zachary's karate club network, a standard example of irregular graph data; colors denote communities obtained by modularity-based clustering. Source: <a href="https://tkipf.github.io/graph-convolutional-networks/">Thomas Kipf, <em>Graph Convolutional Networks</em> (2016)</a>.</figcaption>
 </figure>
 
 ### 1.2 Adjacency matrices and sparse edge lists
@@ -139,8 +139,8 @@ U^{(\ell)}\!\left(h_i^{(\ell)},\bar m_i^{(\ell)}\right).
 $$
 
 <figure class="text-center">
-  <img src="{{ '/assets/img/blog/gnn-from-scratch/message-passing.svg' | relative_url }}" alt="Message passing diagram showing gather, message construction, aggregation, and node update" loading="lazy">
-  <figcaption><strong>Figure 2.</strong> One message-passing layer. Source and destination states are gathered along edges, messages are computed in edge space, and a symmetric reduction returns them to node space before the update.</figcaption>
+  <img class="img-fluid" src="{{ '/assets/img/blog/gnn-from-scratch/gcn-architecture-kipf.png' | relative_url }}" alt="A multilayer graph convolutional network propagating node features over a fixed graph" loading="lazy">
+  <figcaption><strong>Figure 2.</strong> A multilayer GCN repeatedly propagates and transforms node representations while preserving the graph structure. Source: <a href="https://tkipf.github.io/graph-convolutional-networks/">Thomas Kipf, <em>Graph Convolutional Networks</em> (2016)</a>.</figcaption>
 </figure>
 
 Equations (1)–(3) translate directly into PyTorch. For sum aggregation:
@@ -380,8 +380,8 @@ def gat_head(x, src, dst, weight, attn_src, attn_dst,
 ```
 
 <figure class="text-center">
-  <img src="{{ '/assets/img/blog/gnn-from-scratch/gcn-vs-gat.svg' | relative_url }}" alt="Comparison of degree-normalized GCN weights with feature-dependent GAT attention weights" loading="lazy">
-  <figcaption><strong>Figure 3.</strong> GCN and GAT use the same local communication graph but assign coefficients differently. GCN coefficients are fixed by node degrees; GAT coefficients are learned from the current endpoint representations and normalized per destination.</figcaption>
+  <img class="img-fluid" src="{{ '/assets/img/blog/gnn-from-scratch/gat-layer-velickovic.png' | relative_url }}" alt="A multi-head graph attention layer aggregating differently weighted neighboring representations" loading="lazy">
+  <figcaption><strong>Figure 3.</strong> A multi-head graph attention update. Each head assigns its own normalized coefficients to the incoming neighbors; head outputs are concatenated or averaged. Source: <a href="https://github.com/PetarV-/GAT">official GAT repository, Veličković et al.</a></figcaption>
 </figure>
 
 ### 4.2 Multiple attention heads
@@ -528,8 +528,13 @@ $$
 Larger $S^{(\ell)}$ and smaller $D^{(\ell)}$ indicate more aligned representations.
 
 <figure class="text-center">
-  <img src="{{ '/assets/img/blog/gnn-from-scratch/oversmoothing.svg' | relative_url }}" alt="Layer-wise mean pairwise cosine similarity and normalized dispersion for six-layer GCN and GAT models" loading="lazy">
-  <figcaption><strong>Figure 4.</strong> Layer-wise oversmoothing diagnostics, averaged over three seeds. In this particular single-head experiment, GAT states align earlier and retain less node-wise dispersion than GCN states.</figcaption>
+  <img class="img-fluid" src="{{ '/assets/img/blog/gnn-from-scratch/oversmoothing-cosine.svg' | relative_url }}" alt="Mean pairwise cosine similarity by layer for six-layer GCN and GAT models" loading="lazy">
+  <figcaption><strong>Figure 4.</strong> Mean pairwise cosine similarity by message-passing depth. Curves show the mean over three seeds; shaded regions show one sample standard deviation.</figcaption>
+</figure>
+
+<figure class="text-center">
+  <img class="img-fluid" src="{{ '/assets/img/blog/gnn-from-scratch/oversmoothing-dispersion.svg' | relative_url }}" alt="Normalized node dispersion by layer for six-layer GCN and GAT models" loading="lazy">
+  <figcaption><strong>Figure 5.</strong> Normalized node dispersion by message-passing depth. In this single-head experiment, GAT representations lose node-wise dispersion earlier than GCN representations.</figcaption>
 </figure>
 
 | Layer | GCN cosine $\uparrow$ | GAT cosine $\uparrow$ | GCN dispersion $\downarrow$ | GAT dispersion $\downarrow$ |
